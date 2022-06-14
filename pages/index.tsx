@@ -1,10 +1,9 @@
+import Link from "next/link";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
 
 export default function Home() {
   const { data, isLoading } = trpc.useQuery(["questions.get-all"]);
-
-  console.log(process.env.URL);
 
   return (
     <>
@@ -12,8 +11,10 @@ export default function Home() {
       {(isLoading || !data) && <div>Loading questions...</div>}
       {data && (
         <div>
-          {data.map((q) => (
-            <p key={q.id}>{q.text}</p>
+          {data.map((question) => (
+            <Link key={question.id} href={`/question/${question.id}`}>
+              <p style={{ cursor: "pointer" }}>{question.text}</p>
+            </Link>
           ))}
         </div>
       )}
