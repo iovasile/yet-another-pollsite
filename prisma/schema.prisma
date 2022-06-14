@@ -14,7 +14,7 @@ datasource db {
 
 model PollQuestion {
   id        Int       @id @default(autoincrement())
-  text      String
+  text      String    @db.VarChar(255)
   createdAt DateTime  @default(now())
   endingAt  DateTime?
 }

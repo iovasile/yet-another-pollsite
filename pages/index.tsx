@@ -1,18 +1,45 @@
-import type { NextPage } from "next";
+import { useState } from "react";
 import { trpc } from "../utils/trpc";
 
-const Home: NextPage = () => {
+export default function Home() {
   const { data, isLoading } = trpc.useQuery(["questions.get-all"]);
 
-  if (isLoading || !data) return <div>Loading ...</div>;
+  return (
+    <>
+      <QuestionCreator />
+      {(isLoading || !data) && <div>Loading questions...</div>}
+      {data && (
+        <div>
+          {data.map((q) => (
+            <p key={q.id}>{q.text}</p>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+const QuestionCreator: React.FC = () => {
+  const client = trpc.useContext();
+  const { mutate } = trpc.useMutation(["questions.create"], {
+    onSuccess: () => {
+      client.invalidateQueries(["questions.get-all"]);
+    },
+  });
 
   return (
-    <div>
-      {data.map((q) => (
-        <p key={q.id}>{q.text}</p>
-      ))}
-    </div>
+    <input
+      placeholder="Add a question"
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          mutate({
+            text: event.currentTarget.value,
+          });
+
+          event.currentTarget.value = "";
+        }
+      }}
+      type="text"
+    />
   );
 };
-
-export default Home;
