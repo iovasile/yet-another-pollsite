@@ -15,7 +15,7 @@ export default withTRPC<AppRouter>({
      */
 
     const url =
-      process.env.NODE_ENV !== "production"
+      process.env.NODE_ENV === "production"
         ? `https://polls.iovasile.dev/api/trpc`
         : "http://localhost:3000/api/trpc";
 
