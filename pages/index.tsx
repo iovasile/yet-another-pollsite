@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import { prisma } from "../utils/prisma";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
@@ -17,13 +16,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-export const getStaticProps = async () => {
-  const questions = await prisma.pollQuestion.findMany();
-
-  return {
-    props: {
-      questions: JSON.stringify(questions),
-    },
-  };
-};
