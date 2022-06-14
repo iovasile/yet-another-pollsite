@@ -4,6 +4,8 @@ import { trpc } from "../utils/trpc";
 export default function Home() {
   const { data, isLoading } = trpc.useQuery(["questions.get-all"]);
 
+  console.log(process.env.URL);
+
   return (
     <>
       <QuestionCreator />
