@@ -6,7 +6,7 @@ export const questionsRouter = trpc
   .router()
   .query("get-all", {
     async resolve() {
-      return await prisma.pollQuestion.findMany();
+      return await prisma.question.findMany();
     },
   })
   .query("get-one", {
@@ -14,7 +14,7 @@ export const questionsRouter = trpc
       id: z.number(),
     }),
     async resolve({ input }) {
-      return await prisma.pollQuestion.findFirst({
+      return await prisma.question.findFirst({
         where: {
           id: input.id,
         },
@@ -27,7 +27,7 @@ export const questionsRouter = trpc
       endingAt: z.date().optional(),
     }),
     async resolve({ input }) {
-      return await prisma.pollQuestion.create({
+      return await prisma.question.create({
         data: {
           text: input.text,
           endingAt: input.endingAt,
